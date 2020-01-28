@@ -12,6 +12,8 @@ using System.Reflection;
 using Word = Microsoft.Office.Interop.Word;
 using System.Collections.ObjectModel;
 
+//using Microsoft.Office.Interop.Word; to edit and write word documents
+
 namespace coverLetterGenerator
 {
     public partial class CLG : Form
@@ -23,6 +25,7 @@ namespace coverLetterGenerator
 
         private void FindAndReplace(Word.Application wordApp, object ToFindText, object replaceWithText)
         {
+            //required variable for usind the find and replace method of the libirary
             object matchCase = true;
             object matchWholeWord = true;
             object matchWildCards = false;
@@ -54,14 +57,16 @@ namespace coverLetterGenerator
         //Creeate the Doc Method
         private void CreateWordDocument(object location)
         {
-            
+            // repeat the replacing and saving for each row in the grid
             foreach (DataGridViewRow row in DGVData.Rows)
             {
                 if (row.Index == DGVData.RowCount-1) { break; }
                 Word.Application wordApp = new Word.Application();
                 object missing = Missing.Value;
                 Word.Document myWordDoc = null;
+                // use CoverTemp.docx as template the location is the path of exe file on the debug or release folder
                 object filename = ((string)location) + "CoverTemp.docx";
+                // name of the file that will be generated
                 object SaveAs= ((string)location) + "Moussab_MOULIM_CoverLetter_"+ row.Cells[0].Value.ToString().Replace(" ","_")+ ".docx";
 
                 if (File.Exists((string)filename))
@@ -108,6 +113,7 @@ namespace coverLetterGenerator
 
         private void BtnGenerate_Click(object sender, EventArgs e)
         {
+            //the path of the exe file generally on the bin/debug folder or pn bin/release folder base on your mode of compiling the app
             CreateWordDocument(Application.StartupPath + @"\");
         }
 
